@@ -187,7 +187,7 @@ namespace DYLEditorApplication
                     progress.Report(report);
                 };
 
-                IConversionResult result = await conversion.Start(@$"-y -i {videoDir} -i {audioDir} -c:v copy -c:a aac {outputDir}");
+                IConversionResult result = await conversion.Start($@"-y -i ""{videoDir}"" -i ""{audioDir}"" -c:v copy -c:a aac ""{outputDir}""");
                 return result;
         }
 
