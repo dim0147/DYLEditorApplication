@@ -34,6 +34,8 @@ namespace DYLEditorApplication
             this.labelProcess = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.btnShowFolderContainVideo = new System.Windows.Forms.Button();
+            this.labelAudioProcess = new System.Windows.Forms.Label();
+            this.audioProgressBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // labelStep
@@ -47,12 +49,12 @@ namespace DYLEditorApplication
             // labelProcess
             // 
             this.labelProcess.AutoSize = true;
-            this.labelProcess.Location = new System.Drawing.Point(195, 75);
+            this.labelProcess.Location = new System.Drawing.Point(123, 72);
             this.labelProcess.MaximumSize = new System.Drawing.Size(600, 0);
             this.labelProcess.Name = "labelProcess";
-            this.labelProcess.Size = new System.Drawing.Size(26, 20);
+            this.labelProcess.Size = new System.Drawing.Size(162, 20);
             this.labelProcess.TabIndex = 1;
-            this.labelProcess.Text = "ad";
+            this.labelProcess.Text = "Requesting Video File...";
             // 
             // progressBar
             // 
@@ -60,11 +62,10 @@ namespace DYLEditorApplication
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(468, 29);
             this.progressBar.TabIndex = 2;
-            this.progressBar.Value = 10;
             // 
             // btnShowFolderContainVideo
             // 
-            this.btnShowFolderContainVideo.Location = new System.Drawing.Point(260, 144);
+            this.btnShowFolderContainVideo.Location = new System.Drawing.Point(254, 254);
             this.btnShowFolderContainVideo.Name = "btnShowFolderContainVideo";
             this.btnShowFolderContainVideo.Size = new System.Drawing.Size(135, 29);
             this.btnShowFolderContainVideo.TabIndex = 3;
@@ -73,11 +74,30 @@ namespace DYLEditorApplication
             this.btnShowFolderContainVideo.Visible = false;
             this.btnShowFolderContainVideo.Click += new System.EventHandler(this.btnShowFolderContainVideo_Click);
             // 
+            // labelAudioProcess
+            // 
+            this.labelAudioProcess.AutoSize = true;
+            this.labelAudioProcess.Location = new System.Drawing.Point(123, 150);
+            this.labelAudioProcess.MaximumSize = new System.Drawing.Size(600, 0);
+            this.labelAudioProcess.Name = "labelAudioProcess";
+            this.labelAudioProcess.Size = new System.Drawing.Size(163, 20);
+            this.labelAudioProcess.TabIndex = 4;
+            this.labelAudioProcess.Text = "Requesting Audio File...";
+            // 
+            // audioProgressBar
+            // 
+            this.audioProgressBar.Location = new System.Drawing.Point(98, 184);
+            this.audioProgressBar.Name = "audioProgressBar";
+            this.audioProgressBar.Size = new System.Drawing.Size(468, 29);
+            this.audioProgressBar.TabIndex = 5;
+            // 
             // HandleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(651, 185);
+            this.ClientSize = new System.Drawing.Size(651, 311);
+            this.Controls.Add(this.audioProgressBar);
+            this.Controls.Add(this.labelAudioProcess);
             this.Controls.Add(this.btnShowFolderContainVideo);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.labelProcess);
@@ -87,6 +107,7 @@ namespace DYLEditorApplication
             this.Name = "HandleForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Render";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.HandleForm_FormClosed);
             this.Load += new System.EventHandler(this.HandleForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -99,5 +120,7 @@ namespace DYLEditorApplication
         private System.Windows.Forms.Label labelProcess;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button btnShowFolderContainVideo;
+        private System.Windows.Forms.Label labelAudioProcess;
+        private System.Windows.Forms.ProgressBar audioProgressBar;
     }
 }

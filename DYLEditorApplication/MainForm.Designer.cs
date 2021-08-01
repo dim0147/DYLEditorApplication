@@ -46,12 +46,18 @@ namespace DYLEditorApplication
             this.btnSupport = new System.Windows.Forms.Button();
             this.labelOutputFileName = new System.Windows.Forms.Label();
             this.tbOutputFileName = new System.Windows.Forms.TextBox();
+            this.labelSuggestNameFile = new System.Windows.Forms.Label();
+            this.labelDownloadFolder = new System.Windows.Forms.Label();
+            this.labelOutputFolder = new System.Windows.Forms.Label();
+            this.labelSuggestConfig = new System.Windows.Forms.Label();
+            this.btnUpdateInfo = new System.Windows.Forms.Button();
+            this.btnCommonError = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(273, 257);
+            this.btnStart.Location = new System.Drawing.Point(248, 403);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(94, 29);
             this.btnStart.TabIndex = 0;
@@ -72,7 +78,7 @@ namespace DYLEditorApplication
             // 
             // tbUrl
             // 
-            this.tbUrl.Location = new System.Drawing.Point(172, 171);
+            this.tbUrl.Location = new System.Drawing.Point(156, 291);
             this.tbUrl.Name = "tbUrl";
             this.tbUrl.Size = new System.Drawing.Size(383, 27);
             this.tbUrl.TabIndex = 2;
@@ -80,7 +86,7 @@ namespace DYLEditorApplication
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(37, 174);
+            this.label1.Location = new System.Drawing.Point(21, 294);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(112, 20);
             this.label1.TabIndex = 3;
@@ -117,18 +123,18 @@ namespace DYLEditorApplication
             // 
             // btnSupport
             // 
-            this.btnSupport.Location = new System.Drawing.Point(516, 63);
+            this.btnSupport.Location = new System.Drawing.Point(516, 57);
             this.btnSupport.Name = "btnSupport";
             this.btnSupport.Size = new System.Drawing.Size(94, 29);
             this.btnSupport.TabIndex = 7;
-            this.btnSupport.Text = "Support";
+            this.btnSupport.Text = "Inbox";
             this.btnSupport.UseVisualStyleBackColor = true;
             this.btnSupport.Click += new System.EventHandler(this.btnSupport_Click);
             // 
             // labelOutputFileName
             // 
             this.labelOutputFileName.AutoSize = true;
-            this.labelOutputFileName.Location = new System.Drawing.Point(37, 213);
+            this.labelOutputFileName.Location = new System.Drawing.Point(21, 333);
             this.labelOutputFileName.Name = "labelOutputFileName";
             this.labelOutputFileName.Size = new System.Drawing.Size(129, 20);
             this.labelOutputFileName.TabIndex = 8;
@@ -136,18 +142,83 @@ namespace DYLEditorApplication
             // 
             // tbOutputFileName
             // 
-            this.tbOutputFileName.Location = new System.Drawing.Point(172, 210);
+            this.tbOutputFileName.Location = new System.Drawing.Point(156, 330);
             this.tbOutputFileName.Name = "tbOutputFileName";
             this.tbOutputFileName.Size = new System.Drawing.Size(383, 27);
             this.tbOutputFileName.TabIndex = 9;
-            this.tbOutputFileName.Text = "DYL_Video.mp4";
+            this.tbOutputFileName.Text = "DYL_Video";
+            // 
+            // labelSuggestNameFile
+            // 
+            this.labelSuggestNameFile.AutoSize = true;
+            this.labelSuggestNameFile.Location = new System.Drawing.Point(5, 370);
+            this.labelSuggestNameFile.Name = "labelSuggestNameFile";
+            this.labelSuggestNameFile.Size = new System.Drawing.Size(599, 20);
+            this.labelSuggestNameFile.TabIndex = 10;
+            this.labelSuggestNameFile.Text = "* Name your video file, do not contain special character lile \"\", !@#$%^&*(), eg:" +
+    " DYL_Video";
+            // 
+            // labelDownloadFolder
+            // 
+            this.labelDownloadFolder.AutoSize = true;
+            this.labelDownloadFolder.Location = new System.Drawing.Point(68, 161);
+            this.labelDownloadFolder.Name = "labelDownloadFolder";
+            this.labelDownloadFolder.Size = new System.Drawing.Size(127, 20);
+            this.labelDownloadFolder.TabIndex = 11;
+            this.labelDownloadFolder.Text = "Download Folder:";
+            // 
+            // labelOutputFolder
+            // 
+            this.labelOutputFolder.AutoSize = true;
+            this.labelOutputFolder.Location = new System.Drawing.Point(68, 193);
+            this.labelOutputFolder.Name = "labelOutputFolder";
+            this.labelOutputFolder.Size = new System.Drawing.Size(104, 20);
+            this.labelOutputFolder.TabIndex = 12;
+            this.labelOutputFolder.Text = "Output Folder:";
+            // 
+            // labelSuggestConfig
+            // 
+            this.labelSuggestConfig.AutoSize = true;
+            this.labelSuggestConfig.Location = new System.Drawing.Point(141, 220);
+            this.labelSuggestConfig.Name = "labelSuggestConfig";
+            this.labelSuggestConfig.Size = new System.Drawing.Size(445, 60);
+            this.labelSuggestConfig.TabIndex = 13;
+            this.labelSuggestConfig.Text = "* Please make sure your selected folder have enough space \r\nfor downloading video" +
+    " + audio and output video, you can change\r\n the folder by go to Config on top ri" +
+    "ght.";
+            // 
+            // btnUpdateInfo
+            // 
+            this.btnUpdateInfo.Location = new System.Drawing.Point(14, 57);
+            this.btnUpdateInfo.Name = "btnUpdateInfo";
+            this.btnUpdateInfo.Size = new System.Drawing.Size(131, 29);
+            this.btnUpdateInfo.TabIndex = 14;
+            this.btnUpdateInfo.Text = "Update";
+            this.btnUpdateInfo.UseVisualStyleBackColor = true;
+            this.btnUpdateInfo.Click += new System.EventHandler(this.btnUpdateInfo_Click);
+            // 
+            // btnCommonError
+            // 
+            this.btnCommonError.Location = new System.Drawing.Point(481, 101);
+            this.btnCommonError.Name = "btnCommonError";
+            this.btnCommonError.Size = new System.Drawing.Size(142, 29);
+            this.btnCommonError.TabIndex = 15;
+            this.btnCommonError.Text = "Common Error";
+            this.btnCommonError.UseVisualStyleBackColor = true;
+            this.btnCommonError.Click += new System.EventHandler(this.btnCommonError_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(635, 310);
+            this.ClientSize = new System.Drawing.Size(635, 461);
+            this.Controls.Add(this.btnCommonError);
+            this.Controls.Add(this.btnUpdateInfo);
+            this.Controls.Add(this.labelSuggestConfig);
+            this.Controls.Add(this.labelOutputFolder);
+            this.Controls.Add(this.labelDownloadFolder);
+            this.Controls.Add(this.labelSuggestNameFile);
             this.Controls.Add(this.tbOutputFileName);
             this.Controls.Add(this.labelOutputFileName);
             this.Controls.Add(this.btnSupport);
@@ -182,6 +253,12 @@ namespace DYLEditorApplication
         private Button btnSupport;
         private Label labelOutputFileName;
         private TextBox tbOutputFileName;
+        private Label labelSuggestNameFile;
+        private Label labelDownloadFolder;
+        private Label labelOutputFolder;
+        private Label labelSuggestConfig;
+        private Button btnUpdateInfo;
+        private Button btnCommonError;
     }
 }
 
