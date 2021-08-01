@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GoogleAnalyticsTracker.Core.Interface;
+using GoogleAnalyticsTracker.Simple;
+using Sentry;
+using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
@@ -6,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Xabe.FFmpeg;
 
 namespace DYLEditorApplication
@@ -45,6 +49,19 @@ namespace DYLEditorApplication
             }
         }
 
+        public class TrackerPlatflom : ITrackerEnvironment
+        {
+            public string OsPlatform { get; set; }
+            public string OsVersion { get; set; }
+            public string OsVersionString { get; set; }
+
+            public TrackerPlatflom(string OsPlatform, string OsVersion, string OsVersionString)
+            {
+                this.OsPlatform = OsPlatform;
+                this.OsVersion = OsVersion;
+                this.OsVersionString = OsVersionString;
+            }
+        }
 
         public static bool IsValidURL(string URL)
         {
@@ -67,6 +84,7 @@ namespace DYLEditorApplication
             string supportPage = ConfigurationManager.AppSettings.Get("DYL_SUPPORT_PAGE");
             string downloadPath = ConfigurationManager.AppSettings.Get("DOWNLOAD_PATH");
             string outputPath = ConfigurationManager.AppSettings.Get("OUTPUT_PATH");
+            string downloadParallel = ConfigurationManager.AppSettings.Get("downloadParallel");
 
             if (supportPage.Length == 0)
             {
@@ -84,13 +102,77 @@ namespace DYLEditorApplication
                 UpdateSetting("OUTPUT_PATH", Path.Combine(currentDirectory, "Output"));
             }
 
+            if(downloadParallel.Length == 0)
+            {
+                UpdateSetting("downloadParallel", Path.Combine(currentDirectory, "true"));
+            }
+        }
+
+        public static async Task initGoogleAnAnalytics()
+        {
+            try
+            {
+                TrackerPlatflom environment = new TrackerPlatflom(Environment.OSVersion.Platform.ToString(), Environment.OSVersion.ToString(), Environment.OSVersion.VersionString.ToString());
+                SimpleTracker tracker = new SimpleTracker("UA-154355656-6", environment);
+                Store.simpleTracker = tracker;
+                trackPageView("/home", "Home");
+            }
+            catch(Exception err)
+            {
+                SentrySdk.CaptureException(err);
+            }
+
+        }
+
+        public static async Task trackPageView(string pageUrl, string pageTitle)
+        {
+            try
+            {
+                await Store.simpleTracker.TrackPageViewAsync(pageTitle, pageUrl, null);
+            }
+            catch (Exception err)
+            {
+                SentrySdk.CaptureException(err);
+            }
+        }
+
+        public static async Task trackEvent(string category, string action, string label, long value = 1)
+        {
+            try
+            {
+                await Store.simpleTracker.TrackEventAsync(category, action, label, null, null, value);
+            }
+            catch (Exception err)
+            {
+                SentrySdk.CaptureException(err);
+            }
+        }
+
+        public static string GetSettingByKey(string key)
+        {
+            return ConfigurationManager.AppSettings.Get(key);
         }
 
         public static string getExtensionFileFromURL(string urlFile)
         {
             return "mp4";
-            return !string.IsNullOrEmpty(Path.GetExtension(urlFile)) ? Path.GetExtension(urlFile) : "mp4";
         }
+
+        public static string removeFileExtensionromFileName(string fileName)
+        {
+
+            string extFile = Path.GetExtension(fileName);
+
+            // Have ext file, remove
+            if(extFile != null && !string.IsNullOrEmpty(extFile))
+            {
+                fileName = fileName.Replace(extFile, "");
+            }
+
+            return fileName;
+
+        }
+
 
         public static string FormatFileSize(long bytes)
         {
@@ -189,6 +271,19 @@ namespace DYLEditorApplication
 
                 IConversionResult result = await conversion.Start($@"-y -i ""{videoDir}"" -i ""{audioDir}"" -c:v copy -c:a aac ""{outputDir}""");
                 return result;
+        }
+
+
+        public static void deleteFile(string filePath)
+        {
+            try
+            {
+                File.Delete(filePath);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show($"Error occur when delete file :\n{err.Message}", "Error when delete file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
     }

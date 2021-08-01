@@ -39,25 +39,27 @@ namespace DYLEditorApplication
             this.btnOK = new System.Windows.Forms.Button();
             this.btnShowDownloadPathFolder = new System.Windows.Forms.Button();
             this.btnShowOutputPathFolder = new System.Windows.Forms.Button();
+            this.cbDownloadParallel = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // labelDownloadPath
             // 
             this.labelDownloadPath.AutoSize = true;
-            this.labelDownloadPath.Location = new System.Drawing.Point(19, 25);
+            this.labelDownloadPath.Location = new System.Drawing.Point(14, 25);
             this.labelDownloadPath.Name = "labelDownloadPath";
-            this.labelDownloadPath.Size = new System.Drawing.Size(113, 20);
+            this.labelDownloadPath.Size = new System.Drawing.Size(127, 20);
             this.labelDownloadPath.TabIndex = 0;
-            this.labelDownloadPath.Text = "Download Path:";
+            this.labelDownloadPath.Text = "Download Folder:";
+            this.labelDownloadPath.Click += new System.EventHandler(this.labelDownloadPath_Click);
             // 
             // labelOutputPath
             // 
             this.labelOutputPath.AutoSize = true;
             this.labelOutputPath.Location = new System.Drawing.Point(20, 58);
             this.labelOutputPath.Name = "labelOutputPath";
-            this.labelOutputPath.Size = new System.Drawing.Size(90, 20);
+            this.labelOutputPath.Size = new System.Drawing.Size(104, 20);
             this.labelOutputPath.TabIndex = 1;
-            this.labelOutputPath.Text = "Output Path:";
+            this.labelOutputPath.Text = "Output Folder:";
             // 
             // tbDownloadPath
             // 
@@ -97,11 +99,11 @@ namespace DYLEditorApplication
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(173, 100);
+            this.btnOK.Location = new System.Drawing.Point(196, 130);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(94, 29);
             this.btnOK.TabIndex = 6;
-            this.btnOK.Text = "OK";
+            this.btnOK.Text = "Save";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
@@ -125,11 +127,22 @@ namespace DYLEditorApplication
             this.btnShowOutputPathFolder.UseVisualStyleBackColor = true;
             this.btnShowOutputPathFolder.Click += new System.EventHandler(this.btnShowOutputPathFolder_Click);
             // 
+            // cbDownloadParallel
+            // 
+            this.cbDownloadParallel.AutoSize = true;
+            this.cbDownloadParallel.Location = new System.Drawing.Point(138, 99);
+            this.cbDownloadParallel.Name = "cbDownloadParallel";
+            this.cbDownloadParallel.Size = new System.Drawing.Size(253, 24);
+            this.cbDownloadParallel.TabIndex = 9;
+            this.cbDownloadParallel.Text = "Download Video + Audio Parallel";
+            this.cbDownloadParallel.UseVisualStyleBackColor = true;
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(498, 141);
+            this.ClientSize = new System.Drawing.Size(498, 174);
+            this.Controls.Add(this.cbDownloadParallel);
             this.Controls.Add(this.btnShowOutputPathFolder);
             this.Controls.Add(this.btnShowDownloadPathFolder);
             this.Controls.Add(this.btnOK);
@@ -161,5 +174,6 @@ namespace DYLEditorApplication
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnShowDownloadPathFolder;
         private System.Windows.Forms.Button btnShowOutputPathFolder;
+        private System.Windows.Forms.CheckBox cbDownloadParallel;
     }
 }

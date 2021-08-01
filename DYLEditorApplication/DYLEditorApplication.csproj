@@ -4,7 +4,19 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <ApplicationIcon>app.ico</ApplicationIcon>
+    <ApplicationIcon>scontent_fsin9-1_fna_fbcdn_net-17834975_398890860494002_2449596238905335835_o.ico</ApplicationIcon>
+    <Version>1.1.0</Version>
+    <Description>- This app is under DYL Download Facebook Video extension on chrome store.
+- This will help you render video with duration bigger than 1 hour.
+- This app won't collect any your personal/computer data, it just download video and audio and then render to one single video file.
+- This app required .NET Core to run, it's have contain .NET Core library so you don't need to install .NET Core to run this app and that's why this app have around 200Mb.
+
+</Description>
+    <Copyright>© 2021 DYL Extension</Copyright>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/dim0147/DYLEditorApplication</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dim0147/DYLEditorApplication</RepositoryUrl>
+    <Win32Resource />
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,10 +24,15 @@
     <None Remove="FFmpeg\ffmpeg.exe" />
     <None Remove="FFmpeg\ffprobe.exe" />
     <None Remove="Output\readme.txt" />
+    <None Include="C:\Users\DucSuperman\Desktop\License\license.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Autoupdater.NET.Official" Version="1.7.0" />
+    <PackageReference Include="GoogleAnalyticsTracker.Simple" Version="6.0.7" />
     <PackageReference Include="Sentry" Version="3.8.1" />
     <PackageReference Include="Xabe.FFmpeg" Version="5.0.2" />
     <PackageReference Include="Xabe.FFmpeg.Downloader" Version="5.0.2" />

@@ -20,6 +20,8 @@ namespace DYLEditorApplication
 
         public string srcVideo;
         public string srcAudio;
+        private string tempVideoFileName;
+        private string tempAudioFileName;
         public string outputFileName;
 
         public HandleForm(string srcVideo, string srcAudio, string outputFileName)
@@ -30,6 +32,8 @@ namespace DYLEditorApplication
             InitializeComponent();
         }
 
+
+
         private void HandleForm_Load(object sender, EventArgs e)
         {
             this.Text = $"Render {outputFileName}";
@@ -38,22 +42,24 @@ namespace DYLEditorApplication
 
         private async void startHandle()
         {
-
+            string downloadBaseDir = Utils.GetSettingByKey("DOWNLOAD_PATH");
+            string outputBaseDir = Utils.GetSettingByKey("OUTPUT_PATH");
             try
             {
                 string currentDirectory = Directory.GetCurrentDirectory();
 
+                string[] result = await downloadVideoAndAudio();
+
                 // Download Video
-                labelStep.Text = "Step 1 (1/3): Downloading Video...";
-                string videoDir = await downloadVideoOrAudio(srcVideo);
+                string videoDir = result[0];
 
                 // Download Audio
-                labelStep.Text = "Step 2 (2/3): Downloading audio...";
-                string audioDir = await downloadVideoOrAudio(srcAudio);
+                string audioDir = result[1];
+
 
                 // Render Video
-                labelStep.Text = "Step 3 (3/3): Rendering video...";
-                string outputDir = Path.Combine(ConfigurationManager.AppSettings.Get("OUTPUT_PATH"), outputFileName);
+                labelStep.Text = "Step Final: Rendering video...";
+                string outputDir = Path.Combine(outputBaseDir, outputFileName);
                 var progressDownloadFile = new Progress<Utils.ReportRenderType>();
                 progressDownloadFile.ProgressChanged += reportProcessChange;
                 await Utils.renderVideo(videoDir, audioDir, outputDir, progressDownloadFile);
@@ -64,31 +70,71 @@ namespace DYLEditorApplication
                 btnShowFolderContainVideo.Visible = true;
 
                 // Delete download file
-                File.Delete(videoDir);
-                File.Delete(audioDir);
+                Utils.deleteFile(videoDir);
+                Utils.deleteFile(audioDir);
             }
             catch(Exception err)
             {
+                Utils.trackEvent("Render", "Error", "startHandle");
                 SentrySdk.CaptureException(err);
-                string displayMessage = $"Error occur, the error has been sent, please try later!";
+                Utils.deleteFile(Path.Combine(downloadBaseDir, tempVideoFileName));
+                Utils.deleteFile(Path.Combine(downloadBaseDir, tempAudioFileName));
+                Utils.deleteFile(Path.Combine(outputBaseDir, outputFileName));
+
+                string displayMessage = $"Error occur, please take a screenshot or copy this error inbox to DYL Extension page so we can fix, error detail: \n{err.Message}";
                 MessageBox.Show(displayMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
             }
 
         }
 
-        private async Task<string> downloadVideoOrAudio(string src)
+        private async Task<string[]> downloadVideoAndAudio()
+        {
+
+            string[] result = new string[2];
+            bool isDownloadParallel = Boolean.Parse(Utils.GetSettingByKey("downloadParallel"));
+
+            if(isDownloadParallel)
+            {
+                labelStep.Text = "Step 1 (1/2): Downloading Video + Audio...";
+                Task<string> downloadVideo = downloadVideoOrAudio(srcVideo, "video");
+                Task<string> downloadAudio = downloadVideoOrAudio(srcAudio, "audio");
+
+                result = await Task.WhenAll(downloadVideo, downloadAudio);
+            }
+            else
+            {
+                labelStep.Text = "Step 1 (1/3): Downloading Video...";
+                result[0] = await downloadVideoOrAudio(srcVideo, "video");
+                labelStep.Text = "Step 1 (2/3): Downloading Audio...";
+                result[1] = await downloadVideoOrAudio(srcAudio, "audio");
+            }
+
+            return result;
+        }
+
+        private async Task<string> downloadVideoOrAudio(string src, string type)
         {
             // Get files extension
             string extFile = Utils.getExtensionFileFromURL(src);
 
             // Get file name
-            string tempFileName = Guid.NewGuid().ToString() + $".{extFile}";
+            string tempFileName = "DYL-Temp-File-" + Guid.NewGuid().ToString() + $".{extFile}";
 
             // Download Video
             string fileDir = Path.Combine(ConfigurationManager.AppSettings.Get("DOWNLOAD_PATH"), tempFileName);
             var progressDownloadFile = new Progress<Utils.ReportType>();
-            progressDownloadFile.ProgressChanged += processChange;
+
+            if(type == "video")
+            {
+                tempVideoFileName = tempFileName;
+                progressDownloadFile.ProgressChanged += videoProcessChange;
+            }
+            else if(type == "audio")
+            {
+                tempAudioFileName = tempFileName;
+                progressDownloadFile.ProgressChanged += audioProcessChange;
+            }
             await Utils.DownloadFileAsync(src, fileDir, progressDownloadFile);
 
             // Return file path
@@ -96,7 +142,7 @@ namespace DYLEditorApplication
         }
 
 
-        private void processChange(object? sender, Utils.ReportType report)
+        private void videoProcessChange(object? sender, Utils.ReportType report)
         {
             int percentInt = Convert.ToInt32(report.percent);
             string currentDownload = Utils.FormatFileSize(report.totalRead);
@@ -104,7 +150,18 @@ namespace DYLEditorApplication
 
 
             progressBar.Value = percentInt;
-            labelProcess.Text = $"Downloading: {currentDownload}/{totalFileSize}, Process: {Math.Round(report.percent)}%";
+            labelProcess.Text = $"Downloading Video: {currentDownload}/{totalFileSize}, Process: {Math.Round(report.percent)}%";
+        }
+
+        private void audioProcessChange(object? sender, Utils.ReportType report)
+        {
+            int percentInt = Convert.ToInt32(report.percent);
+            string currentDownload = Utils.FormatFileSize(report.totalRead);
+            string totalFileSize = Utils.FormatFileSize(report.totalFileSize);
+
+
+            audioProgressBar.Value = percentInt;
+            labelAudioProcess.Text = $"Downloading Audio: {currentDownload}/{totalFileSize}, Process: {Math.Round(report.percent)}%";
         }
 
         private void reportProcessChange(object? sender, Utils.ReportRenderType report)
@@ -122,6 +179,10 @@ namespace DYLEditorApplication
         private void btnShowFolderContainVideo_Click(object sender, EventArgs e)
         {
             Process.Start("explorer.exe", ConfigurationManager.AppSettings.Get("OUTPUT_PATH"));
+        }
+
+        private void HandleForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
         }
     }
 
